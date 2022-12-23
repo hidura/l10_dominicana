@@ -833,6 +833,7 @@ class AccountMove(models.Model):
     def write(self, vals):
         rec = super(AccountMove, self).write(vals)
 
+
         if 'state' in vals:
             if vals['state'] == 'posted':
                 if len(self.ids)>0:

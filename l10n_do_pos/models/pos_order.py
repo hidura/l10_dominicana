@@ -187,7 +187,7 @@ class PosOrder(models.Model):
 
     @api.model
     def _process_order(self, order, draft, existing_order):
-
+        
         if order["data"].get("to_invoice_backend", False):
             if not order['data']["partner_id"]:
                 pos_config = (
@@ -205,8 +205,11 @@ class PosOrder(models.Model):
             if not draft:
                 order["data"]["to_invoice"] = True
                 order["to_invoice"] = True
-            res =super(PosOrder, self)._process_order(order, draft, existing_order)
-            #Here goes the code to print on the fiscal Printer or to send it to the document.print.
+            
+        
+        print(order['data'])
+        res =super(PosOrder, self)._process_order(order, draft, existing_order)
+        #Here goes the code to print on the fiscal Printer or to send it to the document.print.
 
         return res
 
@@ -229,7 +232,7 @@ class PosOrder(models.Model):
                     "l10n_latam_document_type_id": latam_document_type.id,
                     "l10n_do_ncf_expiration_date": latam_document_type.l10n_do_ncf_expiration_date
                 })
-
+        
         res = super(PosOrder, self).write(vals)
 
         return res

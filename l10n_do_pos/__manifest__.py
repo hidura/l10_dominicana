@@ -20,5 +20,12 @@
         "static/src/xml/pos.xml",
         "static/src/xml/posticket.xml",
     ],
+    'assets': {
+    'web.assets_qweb': [
+        'l10n_do_pos/static/src/xml/pos_receipt.xml',
+    ],
+    'web.assets_backend': [
+        'l10n_do_pos/static/src/js/pos_receipt.js',
+    ]},
     "installable": True,
 }

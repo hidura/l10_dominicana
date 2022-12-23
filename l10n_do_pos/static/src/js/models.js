@@ -379,9 +379,9 @@ odoo.define('l10n_do_pos.models', function (require) {
                     self.pos.ncf_types_data.issued[client.l10n_do_dgii_tax_payer_type][0])
             );
             rpc.query({
-                    model: 'pos.order',
-                    method: 'get_next_sequence',
-                    args: [latam_document_type.id],
+                    model: 'sequence.cf',
+                    method: 'getNCF',
+                    args: [client],
                 }).then(function (res) {
                     self.pos.loading_screen_off();
                     current_order.l10n_latam_document_number = res.ncf;
@@ -389,6 +389,7 @@ odoo.define('l10n_do_pos.models', function (require) {
                     current_order.l10n_latam_sequence_id = latam_sequence.id;
                     current_order.l10n_latam_document_type_id =
                         current_order.l10n_latam_document_type.id;
+                    
                     current_order.save_to_db();
                     _super();
                 },
@@ -634,7 +635,7 @@ odoo.define('l10n_do_pos.models', function (require) {
                 });
             });
         },
-
+       
     });
 
     return models;

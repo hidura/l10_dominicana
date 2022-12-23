@@ -25,6 +25,25 @@ class cf_sequence(models.Model):
         id = super(cf_sequence, self).write(vals_list)
 
         return id
+    
+    def getNCF(self, partner_id):
+        partner = self.env['res.partner'].search([('id', '=', partner_id)])
+        
+        latam_document_type = self.env['l10n_latam.document.type']. \
+            search([('l10n_do_ncf_type', '=',
+                        partner._get_l10n_do_ncf_types_data()['issued'][partner.l10n_do_dgii_tax_payer_type][0])])
+        cf_sequence = self.env['sequence.cf']. \
+            search([('l10n_latam_document_type_id', '=', latam_document_type.id)])
+
+        new_sequence = cf_sequence.current_sequence + 1
+        l10n_latam_document_number = str(new_sequence).zfill(8)
+        cf_sequence.write({'current_sequence': new_sequence})
+        return {
+            "l10n_latam_document_number": latam_document_type.doc_code_prefix + l10n_latam_document_number,
+            'l10n_latam_use_documents': True,
+            "l10n_latam_document_type_id": latam_document_type.id,
+            "l10n_do_ncf_expiration_date": latam_document_type.l10n_do_ncf_expiration_date
+        }
 
 
 class SequenceMove(models.Model):
